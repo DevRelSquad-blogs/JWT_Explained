@@ -1,90 +1,89 @@
-# JWT Authentication Implementation
+# Simple JWT Authentication Demo
 
-A secure and scalable JSON Web Token (JWT) authentication system implementation. This project demonstrates how to implement token-based authentication in a Node.js application with best practices.
+A basic demonstration of JWT (JSON Web Token) authentication using Express.js. This project shows how to implement token-based authentication with protected routes.
 
-## Features
+## 🚀 Features
 
-- 🔐 JWT-based authentication
-- 🚀 Express.js REST API
-- ✨ Token refresh mechanism
-- 🛡️ Protected routes
-- 🔄 Middleware for token verification
+- Basic JWT authentication
+- Protected route example
+- Express.js REST API
+- Simple token verification middleware
 
-## Quick Start
+## 🛠️ Installation
 
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+
 # Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env
-
-# Start the server
-npm start
+npm install express jsonwebtoken body-parser
 ```
 
-## Environment Variables
+## 🔧 Environment Setup
 
+Create a `.env` file in the root directory:
 ```env
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRES_IN=1h
+JWT_SECRET=your_secret_key
 PORT=3000
 ```
 
-## API Endpoints
+## 🏃‍♂️ Quick Start
 
-### Auth Routes
-```
-POST /api/auth/login     - Login user
-POST /api/auth/register  - Register new user
-POST /api/auth/refresh   - Refresh token
+```bash
+# Start the server
+node server.js
 ```
 
-### Protected Routes
+## 🔍 API Endpoints
+
+### Authentication
 ```
-GET /api/user/profile    - Get user profile
-PUT /api/user/profile    - Update user profile
+POST /login
+- Generates JWT token
+- Body: { "username": "your_username" }
 ```
 
-## Usage Example
+### Protected Route
+```
+GET /protected
+- Requires JWT token in Authorization header
+- Returns protected data
+```
 
+## 📝 Usage Example
+
+### Login and Get Token
 ```javascript
-// Login and get token
-fetch('http://localhost:3000/api/auth/login', {
+fetch('http://localhost:3000/login', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    email: 'user@example.com',
-    password: 'password123'
+    username: 'testuser'
   })
-});
+})
+.then(res => res.json())
+.then(data => console.log(data.token));
+```
 
-// Use token in protected routes
-fetch('http://localhost:3000/api/user/profile', {
+### Access Protected Route
+```javascript
+fetch('http://localhost:3000/protected', {
   headers: {
     'Authorization': 'Bearer YOUR_JWT_TOKEN'
   }
-});
+})
+.then(res => res.json())
+.then(data => console.log(data));
 ```
 
-## Security Features
+## 🔒 Security Note
+In production:
+- Use a strong secret key
+- Store sensitive data in environment variables
+- Implement proper error handling
+- Add input validation
 
-- Token expiration
-- HTTP-only cookies
-- CORS protection
-- Rate limiting
-- XSS protection
 
-## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
